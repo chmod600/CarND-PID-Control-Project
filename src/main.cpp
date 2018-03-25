@@ -34,10 +34,12 @@ int main(int argc, char *argv[])
   PID pid;
   // TODO: Initialize the pid variable.
   // Kp - How far off from center of road and how hard you want to steer back to center of road
+  // Final value of Kp: -0.2
   double init_Kp = std::atof(argv[1]);
-  // Ki - Wheels are out of alignments
+  // Ki - Wheels are out of alignment. Setting to 0 for this assignment
   double init_Ki = std::atof(argv[2]);;
   // Kd - Try not to oscillate around center of road
+  // Final value of Kd: -0.2
   double init_Kd = std::atof(argv[3]);
 
   pid.Init(init_Kp, init_Ki, init_Kd);
@@ -73,7 +75,15 @@ int main(int argc, char *argv[])
               json msgJson;
               msgJson["steering_angle"] = steer_value;
 
+              // Set throtle to high to pick up speed
+              // Helps maintain an overall high speed
               double throttle = 0.6;
+
+              // Speed/Throttle Cap
+              // Put a cap on speed and throttle
+              // Apply throttle cap only on high speeds
+              // Above a speed of 10, if Error is high
+              // Or speed is above our cap, then reduce throttle
 
               if((speed > 10) && (abs(cte) > 0.4 || speed > 18)) {
                 throttle = 0.01;

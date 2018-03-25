@@ -15,6 +15,7 @@ void PID::Init(double Kp, double Ki, double Kd) {
   this->Ki = Ki;
   this->Kd = Kd;
 
+  // Init to 0
   p_error = 0;
   i_error = 0;
   d_error = 0;
@@ -23,10 +24,11 @@ void PID::Init(double Kp, double Ki, double Kd) {
 void PID::UpdateError(double cte) {
   d_error = cte - p_error; // p_error is previous_cte
   p_error = cte; // How far off from center
-  i_error += cte;
+  i_error += cte; // Add up all cte values
 }
 
 double PID::TotalError() {
+  // Generic PID formula
   return (Kp * p_error) + (Ki * i_error) + (Kd * d_error);
 }
 
